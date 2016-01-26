@@ -1,0 +1,124 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'war'
+apply plugin: 'maven-publish'
+
+group = 'com.softserveinc'
+//version = '1.0.0-BUILD-SNAPSHOT'
+
+description = """OMS"""
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+
+repositories {
+    mavenCentral()
+    maven { url "http://192.168.103.178/content/groups/public" }
+    maven { url "file:///root/.m2/repository" }
+    maven { url "http://maven.springframework.org/snapshot" }
+    maven { url "http://maven.springframework.org/milestone" }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    
+    
+    publications {
+        mavenWeb(MavenPublication) {
+                from components.web
+                    }
+                    } 
+
+uploadArchives 
+{
+repositories {
+    maven {
+      credentials {
+        username "ashevchuk"
+        password "ashevchuk123"
+      }
+             url "http://192.168.103.178/content/repositories/snapshots"
+
+//        url "http://192.168.103.178/content/repositories/releases"
+    }
+  }
+}
+}
+
+war { baseName = 'OMS'  }
+
+//uploadArchives {
+//   repositories {
+//        maven {
+//            repository(url: "http://192.168.103.185:8081/nexus/content/repositories/snapshots") {
+//                authentication(userName: deployment, password: deployment123)
+//            }
+//            snapshotRepository(url: "http://192.168.103.185:8081/nexus//content/repositories/snapshots") {
+//                authentication(userName: deployment, password: deployment123)
+//           }
+//        }
+//    }
+//}
+
+
+
+
+dependencies {
+    compile(group: 'org.springframework', name: 'spring-context', version:'3.0.5.RELEASE') 
+    {exclude(module: 'commons-logging')}
+    compile group: 'org.springframework', name: 'spring-webmvc', version:'3.0.5.RELEASE'
+    compile group: 'org.aspectj', name: 'aspectjrt', version:'1.6.9'
+    runtime group: 'org.slf4j', name: 'slf4j-api', version:'1.6.1'
+    compile group: 'javax.inject', name: 'javax.inject', version:'1'
+    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
+    compile group: 'org.hibernate', name: 'hibernate-core', version:'3.6.5.Final'
+    compile group: 'net.sourceforge.jtds', name: 'jtds', version:'1.2.4'
+    compile group: 'javassist', name: 'javassist', version:'3.12.1.GA'
+    compile group: 'org.springframework', name: 'spring-orm', version:'3.0.5.RELEASE'
+    compile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+    compile group: 'org.springframework', name: 'spring-test', version:'3.0.5.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version:'3.0.5.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version:'3.0.5.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-web', version:'3.0.5.RELEASE'
+    compile group: 'cglib', name: 'cglib', version:'2.2.2'
+    compile group: 'org.postgresql', name: 'postgresql', version:'9.4-1200-jdbc41'
+    compile group: 'mysql', name: 'mysql-connector-java', version:'5.1.17'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version:'4.2.0.Final'
+    compile group: 'javax.validation', name: 'validation-api', version:'1.0.0.GA'
+    compile group: 'org.apache.tiles', name: 'tiles-jsp', version:'2.2.2'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.8.3'
+    compile group: 'net.sf.jasperreports', name: 'jasperreports', version:'4.0.1'
+    compile group: 'org.springframework.security', name: 'spring-security-taglibs', version:'3.0.5.RELEASE'
+    runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.6.1'
+    runtime group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.6.1'
+    runtime(group: 'log4j', name: 'log4j', version:'1.2.15') {
+
+//configurations.all {
+//if (details.requested.name == 'slf4j-api') {
+            //prefer 'log4j-over-slf4j' over 'log4j', with fixed version:
+//            details.useTarget "org.slf4j:slf4j-api:1.5.10"
+//        }
+
+
+
+configurations {
+    provided
+    all
+
+{
+exclude(module: 'mail')
+exclude(module: 'jms')
+exclude(module: 'jmxtools')
+exclude(module: 'jmxri')
+}
+}
+//    testCompile group: 'junit', name: 'junit', version:'4.7'
+    providedCompile group: 'org.springframework.roo', name: 'org.springframework.roo.annotations', version:'1.0.2.RELEASE'
+}
+}
+
